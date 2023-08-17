@@ -1,0 +1,947 @@
+openapi: 3.0.3
+info:
+  title: Health management - OpenAPI 3.0
+  contact:
+    email: abc@gmail.com
+    url: 'http://www.health.com'
+  version: 1.0.11
+servers:
+  - url: 'https://healthmanagement.com/v1'
+  - url: 'https://healthmanagement.com/v1'
+paths:
+  /healthManagement:
+    get:
+      description: to fetch info
+      parameters:
+        - in: query
+          name: username
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  '/users':
+    post:
+      tags:
+        - users
+      summary: Create user
+      description: New Users Registration.
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    get:
+      tags:
+        - users
+      summary: Get user by email
+      description: Email entered by user must be valid and already registered
+      operationId: getUserEmail
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    put:
+      tags:
+        - users
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+        - name: email
+          in: query
+          description: name that need to be deleted
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent user in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    delete:
+      tags:
+        - users
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+        - name: email
+          in: query
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: content removed
+        '401':
+          description: unauhtorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  /users/createWithList:
+    post:
+      tags:
+        - users
+      summary: Creates list of users with given input array
+      description: Creates list of users with given input array
+      operationId: createUsersWithListInput
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+            # application/xml:
+            #   schema:
+            #     $ref: '#/components/schemas/User'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  "/doctors":
+    post:
+      tags:
+        - doctors
+      summary: Create doctor
+      description: New doctors Registration.
+      operationId: createDoctor
+      requestBody:
+        description: Created doctor object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/doctors'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/doctors'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    get:
+      tags:
+        - doctors
+      summary: Get doctor by email
+      description: Email entered by user must be valid and already registered
+      operationId: getDoctorsEmail
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    put:
+      tags:
+        - doctors
+      summary: Update doctor
+      description: This can only be done by the logged in doctor.
+      operationId: updateDoctor
+      requestBody:
+        description: Update an existent user in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/update'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/update'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    delete:
+      tags:
+        - doctors
+      summary: Delete doctor
+      description: This can only be done by the logged in doctor.
+      operationId: deleteDoctor
+      parameters:
+        - name: email
+          in: query
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: content removed
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  "/medicines":
+    post:
+      tags:
+        - medicines
+      summary: medicine name
+      description: medicine name and id to be written
+      operationId: medicineDetail
+      requestBody:
+        description: Created doctor object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/medicines'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    get:
+      tags:
+        - medicines
+      summary: Get doctor by email
+      description: Email entered by user must be valid and already registered
+      operationId: getMedicine
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    put:
+      tags:
+        - medicines
+      summary: Update medicine
+      description: This can only be done by the admin.
+      operationId: updateMedicine
+      requestBody:
+        description: Update an existent medicine in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    delete:
+      tags:
+        - medicines
+      summary: Delete medicine
+      description: This can only be done by the admin.
+      operationId: deleteMedicine
+      parameters:
+        - name: id
+          in: query
+          description: The medicine that needs to be deleted
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: content removed
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+          
+  '/healthreports':
+    post:
+      tags:
+        - reports
+      summary:  report detail
+      description: report to be created
+      operationId: reportDetail
+      requestBody:
+        description: Created doctor object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    get:
+      tags:
+        - reports
+      summary: Get report by email
+      description: Email entered by user must be valid and already registered
+      operationId: getReports
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    put:
+      tags:
+        - reports
+      summary: Update report
+      description: This can only be done by the admin.
+      operationId: updateReport
+      requestBody:
+        description: Update an existent report in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    delete:
+      tags:
+        - reports
+      summary: Delete report
+      description: This can only be done by the admin.
+      operationId: deleteReport
+      parameters:
+        - name: id
+          in: query
+          description: The medicine that needs to be deleted
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: content removed
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+  "/reviews":
+    post:
+      tags:
+        - reviews
+      summary:  reviewssss
+      description: reviews given by people
+      operationId: review
+      requestBody:
+        description: reviews posted
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rating'
+      responses:
+        '201':
+          description: successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    get:
+      tags:
+        - reviews
+      summary: Get review by email
+      description: Email entered by user must be valid and already registered
+      operationId: getReviews
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rating'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+          
+    put:
+      tags:
+        - reviews
+      summary: Update review
+      description: This can only be done by the admin.
+      operationId: updateReview
+      requestBody:
+        description: Update an existent review 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rating'
+              # $ref: '#/components/schemas/rating/'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+    delete:
+      tags:
+        - reviews
+      summary: Delete review
+      description: This can only be done by the admin.
+      operationId: deleteReview
+      parameters:
+        - name: id
+          in: query
+          description: The medicine that needs to be deleted
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: content removed
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+components:
+  schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+        description:
+          type: string
+        more_info:
+          type: string
+    update:
+      type: object
+      properties:
+        email:
+            type: string
+    User:
+      required:
+        - email
+        - phone
+        - password
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        phone:
+          type: string
+          example: '12345'
+          maxLength: 10
+          minLength: 10
+        gender:
+          type: string
+          enum: 
+            - male
+            - female
+            - other
+        address:
+          type: string
+    doctors:
+      required:
+      - email
+      - speciality
+      - password
+      - gender
+      type: object
+      properties:
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        contactnumber:
+          type: string
+          example: '12345'
+          maxLength: 10
+          minLength: 10
+        speciality:
+          type: string
+          enum: 
+            - neurologist
+            - cardiologist
+            - gynacologist
+            - surgeon
+            - physician
+            - psychiatrist
+            - urologist
+            - nephrologist
+            - pediatrician
+            - dermatologist
+            - anasthesiologist
+            - oncologist
+            - gastroenterlogist
+            - endocrinologist
+            - optomologist
+            - orthologist
+            - ENT Specialist
+            - orthopaedist
+            - pulmonologist
+            - podiatrists
+        gender:
+          type: string
+          enum: 
+            - male
+            - female
+            - other
+    rating: 
+      required:
+        - useremail
+        - doctoremail
+        - stars
+      type: object
+      properties:
+        useremail:
+          type: string
+        doctoremail:
+          type: string
+        stars:
+          type: integer
+          enum: 
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+    medicines:
+      required:
+        - medicine name
+        - medicine id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: paracetamol
+        price:
+          type: string
+        manufacturedate:
+          type: string
+          format: date
+        expirydate:
+          type: string
+          format: date
+        composition:
+          type: string
+          
+       
